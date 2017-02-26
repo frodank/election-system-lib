@@ -1,0 +1,37 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package temp.frodank.electionsystem;
+
+import java.util.List;
+import java.util.Map;
+import temp.frodank.electionsystem.logging.Log;
+
+/**
+ * This is the result returned by {@link Calculator#calculateElection(temp.frodank.electionsystem.BallotBox, temp.frodank.electionsystem.ElectionSystem) }
+ * 
+ *
+ * @author frodank
+ * @param <T> What Number representation the number of candidates are
+ * @param <U> What instance of Choice the winning candidates are
+ */
+public interface ElectionResult<T extends Number, U extends Choice<U>> {
+    /**
+     * Returns the winning candidates in a map with the choice as key and number
+     * of candidates as a number.
+     * If null is returned the result is likely a {@link TiedElectionResult}.
+     * 
+     * @return Winning candidates
+     */
+    Map<U, T> getWinningCandidates();
+    
+    /**
+     * Gets a log containing the detailed calculation for how the candidates was
+     * selected.
+     *
+     * @return A list of Logs
+     */
+    List<Log> getDetailedLog();
+}
