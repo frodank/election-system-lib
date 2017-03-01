@@ -13,9 +13,9 @@ import java.util.LinkedList;
  *
  * @author frodank
  * @param <U> The type of Choice that the vote can have
- * @param <V> It's own type, for comparison
+ * @param <V> It's own type, for copying
  */
-public interface Vote<U extends Choice, V extends Vote> extends Comparable<V>{
+public interface Vote<U extends Choice, V extends Vote> {
     LinkedList<U> getPrioritizedList();
     
     Long getWeight();

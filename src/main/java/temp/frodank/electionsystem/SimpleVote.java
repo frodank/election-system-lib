@@ -43,11 +43,6 @@ public class SimpleVote<T extends Choice> implements Vote<T, SimpleVote>{
     }
 
     @Override
-    public int compareTo(SimpleVote o) {
-        return getChoice().compareTo(o.getChoice());
-    }
-
-    @Override
     public String toString() {
         return getChoice().getName();
     }

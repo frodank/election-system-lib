@@ -53,7 +53,7 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
      * The default implementation of the superLoserTieBreaker is to randomly choose
      * a loser.
      */
-    private class DefaultSingleChoiceLoserTieBreaker implements SingleChoiceTieBreaker<Number, U, V, W> {
+    public class DefaultSingleChoiceLoserTieBreaker implements SingleChoiceTieBreaker<Number, U, V, W> {
         
         private SingleChoiceTieBreaker<Number,U,V,W> superLoserTieBreaker;
 
@@ -86,13 +86,13 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
             votes.stream().forEach((V t) -> {
                 t.getPrioritizedList().retainAll(choices);
             });
-            Map<U, Long> tally = votes.stream().collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
+            Map<U, Long> tally = votes.stream().filter((v)->!v.getPrioritizedList().isEmpty()).collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
             Map<U, Long> orderedResult = sortedChoicesByVotes(tally);
             log.add(new LogVoteCount(orderedResult));
             
             if(orderedResult.entrySet().stream().mapToLong((e) -> e.getValue()).distinct().count() == 1) {
                 List<U> losers = new ArrayList<>(orderedResult.keySet());
-                log.add(new LogChoiceTie(losers, null));
+                log.add(new LogMessage("Eliminating loser", "Difficult to choose which one is the loser. Must use superLoserTieBreaker."));
                 return superLoserTieBreaker.breakTie(choices, ballotBox, log);
             }
             List<U> losers = new ArrayList<>();
@@ -158,13 +158,13 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
     
     @Override
     public SingleWinnerElectionResult calculateResult(W ballotBox) {
+        List<Log> log = new ArrayList<>();
         while(true) {
-            Map<U, Long> tally = ballotBox.getVotes().stream().collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
+            Map<U, Long> tally = ballotBox.getVotes().stream().filter((v)->!v.getPrioritizedList().isEmpty()).collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
             long sumVotes = tally.values().stream().mapToLong((v)-> v).sum();
-            List<Log> log = new ArrayList<>();
             Map<U, Long> orderedResult = sortedChoicesByVotes(tally);
             log.add(new LogVoteCount(orderedResult));
-            Optional<Map.Entry<U, Long>> winner = orderedResult.entrySet().stream().filter((es) -> es.getValue() > ((sumVotes / 2) + 1)).findFirst();
+            Optional<Map.Entry<U, Long>> winner = orderedResult.entrySet().stream().filter((es) -> es.getValue() >= ((sumVotes / 2) + 1)).findFirst();
             if(winner.isPresent()) {
                 Map.Entry<U, Long> winnerEntry = winner.get();
                 log.add(new LogChoiceElected(winnerEntry.getKey(), winnerEntry.getValue()));
@@ -190,12 +190,14 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
                 }
             }
             log.add(new LogMessage("Eliminating loser", "No winner found yet. Starting elimination of loser."));
+            U loser;
             if(losers.size()>1) {
                 log.add(new LogChoiceTie(losers, null));
-                U loser = loserTieBreaker.breakTie(losers, ballotBox.getCopy(), log);
-                log.add(new LogChoiceEliminated(loser, losingNumber));
-                ballotBox.getVotes().stream().forEach((v) -> v.getPrioritizedList().removeAll(Collections.singleton(loser)));
-            }
+                loser = loserTieBreaker.breakTie(losers, ballotBox.getCopy(), log);
+            } else
+                loser = losers.get(0);
+            log.add(new LogChoiceEliminated(loser, losingNumber));
+            ballotBox.getVotes().stream().forEach((v) -> v.getPrioritizedList().removeAll(Collections.singleton(loser)));
         }
     }
     

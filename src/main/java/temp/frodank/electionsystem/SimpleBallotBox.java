@@ -12,29 +12,30 @@ import java.util.Collection;
  *
  * @author frodank
  * @param <T>
+ * @param <V>
  */
-public class SimpleBallotBox<T extends Choice> implements BallotBox<SimpleVote<T>, SimpleBallotBox>{
-    private Collection<SimpleVote<T>> votes;
+public class SimpleBallotBox<T extends Choice, V extends Vote<T,V>> implements BallotBox<V, SimpleBallotBox>{
+    private Collection<V> votes;
 
-    public SimpleBallotBox(Collection<SimpleVote<T>> votes) {
+    public SimpleBallotBox(Collection<V> votes) {
         this.votes = votes;
     }
     
-    public void addVote(SimpleVote<T> vote) {
+    public void addVote(V vote) {
         votes.add(vote);
     }
 
     @Override
     public SimpleBallotBox getCopy() {
-        Collection<SimpleVote<T>> votesCopy = new ArrayList<>();
-        for (SimpleVote<T> vote : votes) {
+        Collection<V> votesCopy = new ArrayList<>();
+        for (V vote : votes) {
             votesCopy.add(vote.getCopy());
         }
         return new SimpleBallotBox(votesCopy);
     }
 
     @Override
-    public Collection<SimpleVote<T>> getVotes() {
+    public Collection<V> getVotes() {
         return votes;
     }
     
