@@ -13,21 +13,24 @@ import temp.frodank.electionsystem.Choice;
  * @author frodank
  */
 public class LogChoiceTie implements Log {
-    private final List<Choice> elected;
+    private final List<? extends Choice> choices;
     private final Number tiedSpots;
 
-    public LogChoiceTie(List<Choice> elected, Number tiedSpots) {
-        this.elected = elected;
+    public LogChoiceTie(List<? extends Choice> elected, Number tiedSpots) {
+        this.choices = elected;
         this.tiedSpots = tiedSpots;
     }
 
     @Override
     public String getMessage() {
-        return elected + " became tied";
+        return choices + " became tied";
     }
 
     @Override
     public String getDetailedMessage() {
-        return elected + " became tied for " + tiedSpots + " spot(s).";
+        if(tiedSpots == null)
+            return choices + " became tied for elimination.";
+        else
+            return choices + " became tied for " + tiedSpots + " spot(s).";
     }
 }

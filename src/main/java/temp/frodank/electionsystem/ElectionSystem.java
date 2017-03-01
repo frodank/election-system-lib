@@ -25,11 +25,11 @@ public abstract class ElectionSystem<T extends ElectionResult, V extends Vote, W
     }
     public abstract T calculateResult(W ballotBox);
     
-    protected Map<Choice, Long> sortedChoicesByVotes(Map<Choice, Long> votes) {
-        List<Choice> sortedList = new ArrayList<>(votes.keySet());
-        Collections.sort(sortedList, (Choice o1, Choice o2) -> (int) (votes.get(o2)-votes.get(o1)));
-        Map<Choice, Long> sortedMap = new LinkedHashMap<>();
-        for (Choice choice : sortedList) {
+    protected <U extends Choice<U>> Map<U, Long> sortedChoicesByVotes(Map<U, Long> votes) {
+        List<U> sortedList = new ArrayList<>(votes.keySet());
+        Collections.sort(sortedList, (U o1, U o2) -> (int) (votes.get(o2)-votes.get(o1)));
+        Map<U, Long> sortedMap = new LinkedHashMap<>();
+        for (U choice : sortedList) {
             sortedMap.put(choice, votes.get(choice));
         }
         return sortedMap;

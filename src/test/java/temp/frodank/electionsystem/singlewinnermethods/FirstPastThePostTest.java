@@ -16,6 +16,7 @@ import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.SimpleBallotBox;
 import temp.frodank.electionsystem.SimpleVote;
 import temp.frodank.electionsystem.SingleChoiceTieBreaker;
+import temp.frodank.electionsystem.logging.Log;
 
 
 /**
@@ -32,13 +33,13 @@ public class FirstPastThePostTest {
         SingleChoiceTieBreaker tb = new SingleChoiceTieBreaker() {
 
             @Override
-            public Choice breakTie(List choices, BallotBox ballotBox) {
+            public Choice breakTie(List choices, BallotBox ballotBox, List log) {
                 return choices.contains(b) ? b : null;
             }
 
             @Override
-            public Map breakTie(List choices, BallotBox ballotBox, Number spots) {
-                return SingleChoiceTieBreaker.super.breakTie(choices, ballotBox, (Integer) spots);
+            public Map breakTie(List choices, BallotBox ballotBox, Number spots, List log) {
+                return SingleChoiceTieBreaker.super.breakTie(choices, ballotBox, spots, log);
             }
         };
         FirstPastThePost fptpwtb = new FirstPastThePost(tb);

@@ -11,19 +11,20 @@ import temp.frodank.electionsystem.Choice;
 /**
  *
  * @author frodank
+ * @param <U>
  */
 public class LogVoteCount implements Log {
     
-    private final Map<Choice, Long> voteCount;
+    private final Map<? extends Choice, Long> voteCount;
 
-    public LogVoteCount(Map<Choice, Long> voteCount) {
+    public LogVoteCount(Map<? extends Choice, Long> voteCount) {
         this.voteCount = voteCount;
     }
     
     private String getVoteCountAsString(String delim) {
         String result ="";
         boolean first=true;
-        for (Map.Entry<Choice, Long> entrySet : voteCount.entrySet()) {
+        for (Map.Entry<? extends Choice, Long> entrySet : voteCount.entrySet()) {
             Choice key = entrySet.getKey();
             Long value = entrySet.getValue();
             result+= (first ? "" : delim) + key.getName() + ": " + value;

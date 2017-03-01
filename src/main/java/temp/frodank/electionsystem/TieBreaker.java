@@ -7,6 +7,7 @@ package temp.frodank.electionsystem;
 
 import java.util.List;
 import java.util.Map;
+import temp.frodank.electionsystem.logging.Log;
 
 /**
  *
@@ -18,5 +19,5 @@ import java.util.Map;
  */
 @FunctionalInterface
 public interface TieBreaker<T extends Number, U extends Choice<U>, V extends Vote<U, V>, W extends BallotBox<V,W>> {
-    Map<U, T> breakTie(List<U> choices, W ballotBox, T spots);
+    Map<U, T> breakTie(List<U> choices, W ballotBox, T spots, List<Log> log);
 }
