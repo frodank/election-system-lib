@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import temp.frodank.electionsystem.BallotBox;
 import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.ElectionSystem;
@@ -54,16 +55,8 @@ public class FirstPastThePost<V extends Vote<? extends Choice, ? extends Vote>, 
 
     @Override
     public SingleWinnerElectionResult calculateResult(W ballotbox) {
-        HashMap<Choice, Long> tally = new HashMap<>();
+        Map<Choice, Long> tally = ballotbox.getVotes().stream().collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
         List<Log> log = new ArrayList<>();
-        for (V vote : ballotbox.getVotes()) {
-            Choice c = vote.getPrioritizedList().peek();
-            Long n = tally.get(c);
-            if(n==null)
-                n=0L;
-            n+=vote.getWeight();
-            tally.put(c, n);
-        }
         Map<Choice, Long> orderedResult = sortedChoicesByVotes(tally);
         log.add(new LogVoteCount(orderedResult));
         List<Choice> winners = new ArrayList<>();
