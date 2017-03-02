@@ -93,7 +93,7 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
             if(orderedResult.entrySet().stream().mapToLong((e) -> e.getValue()).distinct().count() == 1) {
                 List<U> losers = new ArrayList<>(orderedResult.keySet());
                 log.add(new LogMessage("Eliminating loser", "Difficult to choose which one is the loser. Must use superLoserTieBreaker."));
-                return superLoserTieBreaker.breakTie(choices, ballotBox, log);
+                return superLoserTieBreaker.breakTie(losers, ballotBox, log);
             }
             List<U> losers = new ArrayList<>();
             Long losingNumber = null;
@@ -134,8 +134,6 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
     }
     
     public InstantRunOff(SingleChoiceTieBreaker loserTieBreaker, boolean acceptTie) {
-        if(loserTieBreaker == null)
-            loserTieBreaker = new DefaultSingleChoiceLoserTieBreaker();
         this.loserTieBreaker = loserTieBreaker;
         this.acceptTie = acceptTie;
     }
@@ -193,7 +191,10 @@ public class InstantRunOff<V extends Vote<U, V>, U extends Choice<U>, W extends 
             U loser;
             if(losers.size()>1) {
                 log.add(new LogChoiceTie(losers, null));
-                loser = loserTieBreaker.breakTie(losers, ballotBox.getCopy(), log);
+                if(loserTieBreaker == null)
+                    loser = new DefaultSingleChoiceLoserTieBreaker().breakTie(losers, ballotBox.getCopy(), log);
+                else
+                    loser = loserTieBreaker.breakTie(losers, ballotBox.getCopy(), log);
             } else
                 loser = losers.get(0);
             log.add(new LogChoiceEliminated(loser, losingNumber));
