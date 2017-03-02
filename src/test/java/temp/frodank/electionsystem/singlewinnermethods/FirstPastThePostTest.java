@@ -16,6 +16,7 @@ import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.SimpleBallotBox;
 import temp.frodank.electionsystem.SimpleVote;
 import temp.frodank.electionsystem.SingleChoiceTieBreaker;
+import temp.frodank.electionsystem.logging.Log;
 
 
 /**
@@ -23,49 +24,6 @@ import temp.frodank.electionsystem.SingleChoiceTieBreaker;
  * @author frodank
  */
 public class FirstPastThePostTest {
-    class TestChoice implements Choice<TestChoice> {
-        private String name;
-
-        public TestChoice(String name) {
-            this.name = name;
-        }
-        @Override
-        public String getName() {
-            return name;
-        }
-        @Override
-        public int compareTo(TestChoice o) {
-            return this.name.compareTo(o.name);
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 3;
-            hash = 29 * hash + Objects.hashCode(this.name);
-            return hash;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final TestChoice other = (TestChoice) obj;
-            if (!Objects.equals(this.name, other.name)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-    
     @Test
     public void test() {
         FirstPastThePost fptp = new FirstPastThePost();
@@ -75,13 +33,13 @@ public class FirstPastThePostTest {
         SingleChoiceTieBreaker tb = new SingleChoiceTieBreaker() {
 
             @Override
-            public Choice breakTie(List choices, BallotBox ballotBox) {
+            public Choice breakTie(List choices, BallotBox ballotBox, List log) {
                 return choices.contains(b) ? b : null;
             }
 
             @Override
-            public Map breakTie(List choices, BallotBox ballotBox, Number spots) {
-                return SingleChoiceTieBreaker.super.breakTie(choices, ballotBox, (Integer) spots);
+            public Map breakTie(List choices, BallotBox ballotBox, Number spots, List log) {
+                return SingleChoiceTieBreaker.super.breakTie(choices, ballotBox, spots, log);
             }
         };
         FirstPastThePost fptpwtb = new FirstPastThePost(tb);

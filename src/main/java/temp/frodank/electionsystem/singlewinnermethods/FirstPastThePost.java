@@ -73,7 +73,7 @@ public class FirstPastThePost<V extends Vote<? extends Choice, ? extends Vote>, 
             log.add(new LogChoiceTie(winners, 1));
             if(tieBreaker == null)
                 return new TiedSingleWinnerElectionResult(winners, log);
-            Choice winnerByTie = tieBreaker.breakTie(winners, ballotbox);
+            Choice winnerByTie = tieBreaker.breakTie(winners, ballotbox, log);
             if(winnerByTie == null)
                 return new TiedSingleWinnerElectionResult(winners, log);
             log.add(new LogTieBreakChoice(winnerByTie));
