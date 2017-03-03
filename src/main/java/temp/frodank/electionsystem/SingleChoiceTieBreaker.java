@@ -24,7 +24,9 @@ public interface SingleChoiceTieBreaker<T extends Number, U extends Choice<U>, V
     @Override
     default Map<U, T> breakTie(List<U> choices, W ballotBox, T spots, List<Log> log) {
         Map m = new HashMap();
-        m.put(breakTie(choices, ballotBox, log), spots);
+        U u = breakTie(choices, ballotBox, log);
+        if(u != null)
+            m.put(u, spots);
         return m;
     }
     U breakTie(List<U> choices, W ballotBox, List<Log> log);
