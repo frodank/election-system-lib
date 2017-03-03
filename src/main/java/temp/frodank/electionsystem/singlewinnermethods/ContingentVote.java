@@ -6,6 +6,7 @@
 package temp.frodank.electionsystem.singlewinnermethods;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -79,6 +80,7 @@ public class ContingentVote<V extends Vote<U, V>, U extends Choice<U>, W extends
             Long value = entrySet.getValue();
             if(numberOfVotes == null || Objects.equals(value, numberOfVotes)) {
                 maybeCandidates.add(key);
+                numberOfVotes = value;
             } else if(value < numberOfVotes) {
                 int tot = safeCandidates.size()+maybeCandidates.size();
                 if(tot > 2) {
@@ -86,6 +88,8 @@ public class ContingentVote<V extends Vote<U, V>, U extends Choice<U>, W extends
                         maybeCandidates = new ArrayList<>(secondRoundDecider.breakTie(maybeCandidates, ballotBox, 2- safeCandidates.size(), log).keySet());
                 } 
                 safeCandidates.addAll(maybeCandidates);
+                numberOfVotes = value;
+                maybeCandidates = new ArrayList<>(Arrays.asList(key));
                 if(safeCandidates.size()>=2) {
                     break;
                 }
