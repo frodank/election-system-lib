@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Frode Ankill Kämpe <frodank@gmail.com>
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are not permitted without the express permission of the 
+ * copyright holder
  */
 package temp.frodank.electionsystem.singlewinnermethods;
 
@@ -18,7 +20,6 @@ import temp.frodank.electionsystem.Calculator;
 import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.SimpleBallotBox;
 import temp.frodank.electionsystem.SimpleRankedVote;
-import temp.frodank.electionsystem.TieBreaker;
 import temp.frodank.electionsystem.TieBreakerResultException;
 
 /**
