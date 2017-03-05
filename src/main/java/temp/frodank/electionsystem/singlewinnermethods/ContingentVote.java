@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Frode Ankill Kämpe <frodank@gmail.com>
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are not permitted without the express permission of the 
+ * copyright holder
  */
 package temp.frodank.electionsystem.singlewinnermethods;
 
@@ -17,6 +19,7 @@ import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.ElectionSystem;
 import temp.frodank.electionsystem.SingleChoiceTieBreaker;
 import temp.frodank.electionsystem.TieBreaker;
+import temp.frodank.electionsystem.TieBreakerResultException;
 import temp.frodank.electionsystem.Vote;
 import temp.frodank.electionsystem.logging.Log;
 import temp.frodank.electionsystem.logging.LogChoiceElected;
@@ -84,8 +87,11 @@ public class ContingentVote<V extends Vote<U, V>, U extends Choice<U>, W extends
             } else if(value < numberOfVotes) {
                 int tot = safeCandidates.size()+maybeCandidates.size();
                 if(tot > 2) {
-                    if(secondRoundDecider != null)
+                    if(secondRoundDecider != null) {
                         maybeCandidates = new ArrayList<>(secondRoundDecider.breakTie(maybeCandidates, ballotBox, 2- safeCandidates.size(), log).keySet());
+                        if((safeCandidates.size()+maybeCandidates.size()) < 2)
+                            throw new TieBreakerResultException("secondRoundDecider-tiebreaker returned too few choices. A second round should be between (at least) 2 choices.");
+                    }
                 } 
                 safeCandidates.addAll(maybeCandidates);
                 numberOfVotes = value;

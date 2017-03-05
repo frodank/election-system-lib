@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Frode Ankill Kämpe <frodank@gmail.com>
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are not permitted without the express permission of the 
+ * copyright holder
  */
 package temp.frodank.electionsystem;
 
@@ -24,7 +26,9 @@ public interface SingleChoiceTieBreaker<T extends Number, U extends Choice<U>, V
     @Override
     default Map<U, T> breakTie(List<U> choices, W ballotBox, T spots, List<Log> log) {
         Map m = new HashMap();
-        m.put(breakTie(choices, ballotBox, log), spots);
+        U u = breakTie(choices, ballotBox, log);
+        if(u != null)
+            m.put(u, spots);
         return m;
     }
     U breakTie(List<U> choices, W ballotBox, List<Log> log);

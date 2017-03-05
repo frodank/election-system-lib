@@ -1,12 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Frode Ankill Kämpe <frodank@gmail.com>
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are not permitted without the express permission of the 
+ * copyright holder
  */
 package temp.frodank.electionsystem;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;

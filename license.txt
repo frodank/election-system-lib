@@ -5,14 +5,3 @@
  * modification, are not permitted without the express permission of the 
  * copyright holder
  */
-package temp.frodank.electionsystem;
-
-/**
- *
- * @author frodank
- * @param <T>
- */
-public interface Choice<T extends Choice> extends Comparable<T>{
-    String getName();
-}
-
