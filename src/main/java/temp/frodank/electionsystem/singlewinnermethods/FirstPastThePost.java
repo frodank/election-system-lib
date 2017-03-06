@@ -24,28 +24,59 @@ import temp.frodank.electionsystem.logging.LogTieBreakChoice;
 import temp.frodank.electionsystem.logging.LogVoteCount;
 
 /**
+ * A first past the post election system. Used in the UK and US elections, among
+ * others. The election system doesn't take into account any voter-preferences
+ * other than the top-ranked candidate.
+ * 
+ * <p>
+ * 
+ * The first past the post tallies the number of votes each candidate gets, and
+ * declares the candidate with the most votes as the winner. The winning 
+ * candidate is not guaranteed to have won by a majority of the votes.
+ * 
+ * @see <a href="https://en.wikipedia.org/wiki/First-past-the-post_voting">https://en.wikipedia.org/wiki/First-past-the-post_voting</a>
  *
  * @author frodank
- * @param <V>
- * @param <W>
+ * @param <V> The type of {@link Vote} to use. It expects the weight of the vote to be a Long. It will ignore any other than the most preferred candidate stated on each vote.
+ * @param <U> The type of {@link Choice} used in the election
+ * @param <W> The type of {@link BallotBox} to use
  */
-public class FirstPastThePost<V extends Vote<? extends Choice, ? extends Vote>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V,W>{
+public class FirstPastThePost<V extends Vote<Long, U, V>, U extends Choice<U>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V,W>{
 
-    private SingleChoiceTieBreaker tieBreaker;
+    private SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker;
 
-    public FirstPastThePost(SingleChoiceTieBreaker tieBreaker) {
+    /**
+     * Constructor. Takes a {@link SingleChoiceTieBreaker} as an argument, in 
+     * case there is a tie among candidates.
+     * 
+     * @param tieBreaker The tie-breaker used in cases where there is a tie between multiple candidates. If null, or if {@link SingleChoiceTieBreaker#breakTie(java.util.List, temp.frodank.electionsystem.BallotBox, java.util.List)} returns null, a {@link TiedSingleWinnerElectionResult} is returned by {@link #calculateResult(temp.frodank.electionsystem.BallotBox) }.
+     */
+    public FirstPastThePost(SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker) {
         this.tieBreaker = tieBreaker;
     }
 
+    /**
+     * Constructor. Sets tie-breaker as null, which accepts tie-results.
+     * 
+     * @see #FirstPastThePost(temp.frodank.electionsystem.SingleChoiceTieBreaker) 
+     */
     public FirstPastThePost() {
         this.tieBreaker = null;
     }
 
-    public SingleChoiceTieBreaker getTieBreaker() {
+    /**
+     * @return 
+     * @see #FirstPastThePost(temp.frodank.electionsystem.SingleChoiceTieBreaker) 
+     */
+    public SingleChoiceTieBreaker<Integer,U,V,W> getTieBreaker() {
         return tieBreaker;
     }
 
-    public void setTieBreaker(SingleChoiceTieBreaker tieBreaker) {
+    /**
+     * @param tieBreaker 
+     * @see #FirstPastThePost(temp.frodank.electionsystem.SingleChoiceTieBreaker) 
+     */
+    public void setTieBreaker(SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker) {
         this.tieBreaker = tieBreaker;
     }
     
@@ -56,14 +87,14 @@ public class FirstPastThePost<V extends Vote<? extends Choice, ? extends Vote>, 
 
     @Override
     public SingleWinnerElectionResult calculateResult(W ballotbox) {
-        Map<Choice, Long> tally = ballotbox.getVotes().stream().collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
+        Map<U, Long> tally = ballotbox.getVotes().stream().collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));
         List<Log> log = new ArrayList<>();
-        Map<Choice, Long> orderedResult = sortedChoicesByVotes(tally);
+        Map<U, Long> orderedResult = sortedChoicesByVotes(tally);
         log.add(new LogVoteCount(orderedResult));
-        List<Choice> winners = new ArrayList<>();
+        List<U> winners = new ArrayList<>();
         Long winningNumber = null;
-        for (Map.Entry<Choice, Long> entrySet : orderedResult.entrySet()) {
-            Choice key = entrySet.getKey();
+        for (Map.Entry<U, Long> entrySet : orderedResult.entrySet()) {
+            U key = entrySet.getKey();
             Long value = entrySet.getValue();
             if(winningNumber == null || Objects.equals(value, winningNumber)) {
                 winners.add(key);

@@ -11,24 +11,37 @@ import java.util.Map;
 import temp.frodank.electionsystem.Choice;
 
 /**
+ * A log message detailing the number of votes each candidate gets at a given 
+ * time in the calculation.
  *
  * @author frodank
- * @param <U>
  */
 public class LogVoteCount implements Log {
     
-    private final Map<? extends Choice, Long> voteCount;
+    private final Map<? extends Choice, ? extends Number> voteCount;
 
-    public LogVoteCount(Map<? extends Choice, Long> voteCount) {
+    /**
+     * Constructor
+     * 
+     * @param voteCount A map containing the candidates in the count (key) and the number of votes they have
+     */
+    public LogVoteCount(Map<? extends Choice, ? extends Number> voteCount) {
         this.voteCount = voteCount;
     }
     
+    /**
+     * Returns a string containing each candidate and their votes in the form of:
+     * "(candidate): (votes)" separated by a delimiter.
+     * 
+     * @param delim The delimiter to separate the candidates
+     * @return string with formatted candidate+vote-data
+     */
     private String getVoteCountAsString(String delim) {
         String result ="";
         boolean first=true;
-        for (Map.Entry<? extends Choice, Long> entrySet : voteCount.entrySet()) {
+        for (Map.Entry<? extends Choice, ? extends Number> entrySet : voteCount.entrySet()) {
             Choice key = entrySet.getKey();
-            Long value = entrySet.getValue();
+            Number value = entrySet.getValue();
             result+= (first ? "" : delim) + key.getName() + ": " + value;
             first = false;
         }

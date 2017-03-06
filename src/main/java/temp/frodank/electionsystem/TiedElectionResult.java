@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * An interface indicating a tied election-result. 
  *
  * @author frodank
- * @param <T>
- * @param <U>
+ * @param <T> The type representing the number of spots competed for
+ * @param <U> The type of {@link Choice} used in the election
  */
 public interface TiedElectionResult<T extends Number, U extends Choice<U>> extends ElectionResult<T, U>{
     /**

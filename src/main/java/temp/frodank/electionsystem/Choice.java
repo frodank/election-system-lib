@@ -8,11 +8,17 @@
 package temp.frodank.electionsystem;
 
 /**
+ * An interface representing a choice that can be voted for.
  *
  * @author frodank
- * @param <T>
+ * @param <T> Itself. Used for comparability.
  */
 public interface Choice<T extends Choice> extends Comparable<T>{
+    /**
+     * All choices should returned at least a name. Is used in Log-implementation.
+     * 
+     * @return The choices name
+     */
     String getName();
 }
 

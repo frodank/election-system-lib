@@ -10,12 +10,18 @@ package temp.frodank.electionsystem.logging;
 import temp.frodank.electionsystem.Choice;
 
 /**
+ * A log message indicating a candidate has been chosen by a tie-breker.
  *
  * @author frodank
  */
 public class LogTieBreakChoice implements Log{
     private final Choice choice;
 
+    /**
+     * Constructor
+     * 
+     * @param choice The candidate chosen by tie-breaker
+     */
     public LogTieBreakChoice(Choice choice) {
         this.choice = choice;
     }

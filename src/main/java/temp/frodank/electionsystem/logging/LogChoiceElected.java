@@ -11,12 +11,21 @@ import temp.frodank.electionsystem.Choice;
 
 /**
  *
+ * A log message indicating a candidate is elected, and how many votes the person 
+ * has been elected by.
+ * 
  * @author frodank
  */
 public class LogChoiceElected implements Log {
     private Choice elected;
     private Long numberOfVotes;
 
+    /**
+     * Constructor
+     * 
+     * @param elected The candidate which was elected to a position
+     * @param numberOfVotes The number of votes the candidate was elected by
+     */
     public LogChoiceElected(Choice elected, Long numberOfVotes) {
         this.elected = elected;
         this.numberOfVotes = numberOfVotes;

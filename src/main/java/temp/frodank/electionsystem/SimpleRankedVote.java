@@ -10,14 +10,20 @@ package temp.frodank.electionsystem;
 import java.util.LinkedList;
 
 /**
+ * A simple implementation of a ranked vote, with weight 1.
  *
  * @author frodank
- * @param <U>
+ * @param <U> The type of {@link Choice} that the vote can have
  */
-public class SimpleRankedVote<U extends Choice<U>> implements Vote<U, SimpleRankedVote>{
+public class SimpleRankedVote<U extends Choice<U>> implements Vote<Long, U, SimpleRankedVote>{
 
     private final LinkedList<U> choices;
 
+    /**
+     * Constructor
+     * 
+     * @param choices A LinkedList of preferred candidate in ranked order.
+     */
     public SimpleRankedVote(LinkedList<U> choices) {
         this.choices = choices;
     }

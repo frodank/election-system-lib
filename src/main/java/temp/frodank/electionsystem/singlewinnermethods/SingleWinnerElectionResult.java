@@ -13,9 +13,12 @@ import temp.frodank.electionsystem.Choice;
 import temp.frodank.electionsystem.ElectionResult;
 
 /**
- *
+ * An interface for use in election-systems that returns a single winner. The 
+ * {@link ElectionResult#getWinningCandidates() }-method is implemented to return
+ * a map containing only the winner (if there is one), with the value 1.
+ * 
  * @author frodank
- * @param <U>
+ * @param <U> The type of {@link Choice} used in the election
  */
 public interface SingleWinnerElectionResult<U extends Choice<U>> extends ElectionResult<Integer, U> {
     /**
@@ -28,7 +31,9 @@ public interface SingleWinnerElectionResult<U extends Choice<U>> extends Electio
     @Override
     public default Map<U, Integer> getWinningCandidates() {
         Map m = new HashMap();
-        m.put(getWinner(), 1);
+        U winner = getWinner();
+        if(winner != null)
+            m.put(winner, 1);
         return m;
     }
 }

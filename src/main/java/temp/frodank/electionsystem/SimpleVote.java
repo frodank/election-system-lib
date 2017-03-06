@@ -11,20 +11,29 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * This is a simple vote with a weight of 1 and a single vote. getPrioritizedList
- * returns a one-item Choice.
+ * This is a simple vote with a weight of 1 and a single preferred candidate.
+ * getPrioritizedList returns a one-item Choice.
  *
  * @author frodank
- * @param <T> The type of Choice that the vote can have
+ * @param <T> The type of {@link Choice} that the vote can have
  */
-public class SimpleVote<T extends Choice> implements Vote<T, SimpleVote>{
+public class SimpleVote<T extends Choice<T>> implements Vote<Long, T, SimpleVote>{
 
     private final LinkedList<T> choice;
 
+    /**
+     * Constructor
+     * 
+     * @param choice The candidate this vote is for
+     */
     public SimpleVote(T choice) {
         this.choice = new LinkedList<>(Arrays.asList(choice));
     }
     
+    /**
+     * Returns the candidate the vote is for
+     * @return 
+     */
     public T getChoice() {
         return choice.peek();
     }

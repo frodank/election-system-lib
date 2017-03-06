@@ -29,34 +29,78 @@ import temp.frodank.electionsystem.logging.LogTieBreakChoice;
 import temp.frodank.electionsystem.logging.LogVoteCount;
 
 /**
+ * A contingent-vote election system. Used in the Sri Lanka presidential election.
+ * It's also used in the french presidential election, but in a separate vote
+ * instead of an instant ranked election instant election.
+ * 
+ * <p>
+ * 
+ * The contingent vote works by tallying the number of votes each candidate has,
+ * and then eliminating all but the two candidates with the most votes. A new
+ * tally is made to find the winner between the two remaining candidates. This 
+ * second tally takes into account all the votes for candidates that has been
+ * eliminated, by looking at the ranked preference of each vote.
+ * 
+ * @see <a href="https://en.wikipedia.org/wiki/Contingent_vote">https://en.wikipedia.org/wiki/Contingent_vote</a>
  *
  * @author frodank
- * @param <V>
- * @param <U>
- * @param <W>
+ * @param <V> The type of {@link Vote} to use. It expects the weight of the vote to be a Long. It should also be a ranked choice. A one-candidate-type of vote will result in the same result as {@link FirstPastThePost}
+ * @param <U> The type of {@link Choice} used in the election
+ * @param <W> The type of {@link BallotBox} to use
  */
-public class ContingentVote<V extends Vote<U, V>, U extends Choice<U>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V, W> {
+public class ContingentVote<V extends Vote<Long, U, V>, U extends Choice<U>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V, W> {
 
-    private SingleChoiceTieBreaker tieBreaker;
+    private SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker;
     private TieBreaker<Integer,U,V,W> secondRoundDecider;
 
-    public ContingentVote(SingleChoiceTieBreaker tieBreaker, TieBreaker secondRoundDecider) {
+    /**
+     * Constructor for the contingent vote. Takes a SingleChoiceTieBreaker and a
+     * TieBreaker as arguments.
+     * 
+     * <p>
+     * 
+     * The secondRoundDecider will specify the number of candidates needed to 
+     * reach a total of two candidates in the last round. In implementations
+     * where the secondRoundDecider might return more candidates than needed a
+     * majority win is not guaranteed by the election system, as the candidate
+     * with the most votes in the second round is determined to be the winner.
+     * 
+     * @param tieBreaker A single-choice tie-breaker which determines the winner in the case of a second-round tie. If null or if {@link SingleChoiceTieBreaker#breakTie(java.util.List, temp.frodank.electionsystem.BallotBox, java.util.List) } returns null, a {@link TiedSingleWinnerElectionResult} is returned.
+     * @param secondRoundDecider A tie-breaker which determines the second-round contenders. Must return enough candidates to have at least two candidates in a second round. If null, all tied candidates goes on to the next round.
+     */
+    public ContingentVote(SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker, TieBreaker secondRoundDecider) {
         this.tieBreaker = tieBreaker;
         this.secondRoundDecider = secondRoundDecider;
     }
     
-    public SingleChoiceTieBreaker getTieBreaker() {
+    /**
+     * @return 
+     * @see #ContingentVote(temp.frodank.electionsystem.SingleChoiceTieBreaker, temp.frodank.electionsystem.TieBreaker) 
+     */
+    public SingleChoiceTieBreaker<Integer,U,V,W> getTieBreaker() {
         return tieBreaker;
     }
-
-    public void setTieBreaker(SingleChoiceTieBreaker tieBreaker) {
+    
+    /**
+     * @param tieBreaker
+     * @see #ContingentVote(temp.frodank.electionsystem.SingleChoiceTieBreaker, temp.frodank.electionsystem.TieBreaker) 
+     */
+    public void setTieBreaker(SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker) {
         this.tieBreaker = tieBreaker;
     }
-
+    
+    /**
+     * @return 
+     * @see #ContingentVote(temp.frodank.electionsystem.SingleChoiceTieBreaker, temp.frodank.electionsystem.TieBreaker) 
+     */
     public TieBreaker<Integer, U, V, W> getSecondRoundDecider() {
         return secondRoundDecider;
     }
-
+    
+    /**
+     * @param secondRoundDecider
+     * @see #ContingentVote(temp.frodank.electionsystem.SingleChoiceTieBreaker, temp.frodank.electionsystem.TieBreaker) 
+     */
     public void setSecondRoundDecider(TieBreaker<Integer, U, V, W> secondRoundDecider) {
         this.secondRoundDecider = secondRoundDecider;
     }

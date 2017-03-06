@@ -14,13 +14,30 @@ import java.util.LinkedList;
  * a Long weight and a copy of itself.
  *
  * @author frodank
- * @param <U> The type of Choice that the vote can have
+ * @param <T> The type of the weight of the vote
+ * @param <U> The type of {@link Choice} that the vote can have
  * @param <V> It's own type, for copying
  */
-public interface Vote<U extends Choice, V extends Vote> {
+public interface Vote<T extends Number, U extends Choice<U>, V extends Vote> {
+    /**
+     * Returns the list of preferred candidates in ranked order.
+     * 
+     * @return A ranked list of preferred candidates
+     */
     LinkedList<U> getPrioritizedList();
     
-    Long getWeight();
+    /**
+     * How much this vote is worth.
+     * 
+     * @return the weight of the vote.
+     */
+    T getWeight();
     
+    /**
+     * Returns a copy of itself with a copy of the {@link #getPrioritizedList()}.
+     * The objects within are not necessarily cloned.
+     * 
+     * @return A copy of itself
+     */
     V getCopy();
 }
