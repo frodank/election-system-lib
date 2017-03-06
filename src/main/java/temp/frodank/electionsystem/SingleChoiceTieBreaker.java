@@ -22,7 +22,7 @@ import temp.frodank.electionsystem.logging.Log;
  * @param <W> The type of {@link BallotBox} to use
  */
 @FunctionalInterface
-public interface SingleChoiceTieBreaker<T extends Number, U extends Choice<U>, V extends Vote<? extends Number,U, V>, W extends BallotBox<V,W>> extends TieBreaker<T,U,V,W> {
+public interface SingleChoiceTieBreaker<T extends Number, U extends Choice, V extends Vote<? extends Number,U, V>, W extends BallotBox<V,W>> extends TieBreaker<T,U,V,W> {
 
     @Override
     default Map<U, T> breakTie(List<U> choices, W ballotBox, T spots, List<Log> log) {

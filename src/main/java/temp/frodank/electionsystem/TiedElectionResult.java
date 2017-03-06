@@ -17,7 +17,7 @@ import java.util.Map;
  * @param <T> The type representing the number of spots competed for
  * @param <U> The type of {@link Choice} used in the election
  */
-public interface TiedElectionResult<T extends Number, U extends Choice<U>> extends ElectionResult<T, U>{
+public interface TiedElectionResult<T extends Number, U extends Choice> extends ElectionResult<T, U>{
     /**
      * A map containing tied candidates, and the number of spots they were competing for.
      * 

@@ -53,7 +53,7 @@ import temp.frodank.electionsystem.logging.LogVoteCount;
  * @param <U> The type of {@link Choice} used in the election
  * @param <W> The type of {@link BallotBox} to use
  */
-public class InstantRunOff<V extends Vote<Long, U, V>, U extends Choice<U>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V,W> {
+public class InstantRunOff<V extends Vote<Long, U, V>, U extends Choice, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V,W> {
     
     /**
      * This is the default tie-breaker for choosing the loosing candidate in a run-off competition.
@@ -190,7 +190,7 @@ public class InstantRunOff<V extends Vote<Long, U, V>, U extends Choice<U>, W ex
     }
     
     @Override
-    public SingleWinnerElectionResult calculateResult(W ballotBox) {
+    protected SingleWinnerElectionResult calculateResult(W ballotBox) {
         List<Log> log = new ArrayList<>();
         while(true) {
             Map<U, Long> tally = ballotBox.getVotes().stream().filter((v)->!v.getPrioritizedList().isEmpty()).collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));

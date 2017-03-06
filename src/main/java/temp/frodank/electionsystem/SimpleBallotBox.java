@@ -17,7 +17,7 @@ import java.util.Collection;
  * @param <T> The type of {@link Choice} used in the election
  * @param <V> The type of {@link Vote} to use. 
  */
-public class SimpleBallotBox<T extends Choice<T>, V extends Vote<? extends Number,T,V>> implements BallotBox<V, SimpleBallotBox>{
+public class SimpleBallotBox<T extends Choice, V extends Vote<? extends Number,T,V>> implements BallotBox<V, SimpleBallotBox>{
     private Collection<V> votes;
 
     /**

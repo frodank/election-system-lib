@@ -21,7 +21,7 @@ import temp.frodank.electionsystem.logging.Log;
  * @param <W> The type of {@link BallotBox} to use
  */
 @FunctionalInterface
-public interface TieBreaker<T extends Number, U extends Choice<U>, V extends Vote<? extends Number,U, V>, W extends BallotBox<V,W>> {
+public interface TieBreaker<T extends Number, U extends Choice, V extends Vote<? extends Number,U, V>, W extends BallotBox<V,W>> {
     /**
      * Method for breaking a tie, where multiple candidates can be the winner.
      * 

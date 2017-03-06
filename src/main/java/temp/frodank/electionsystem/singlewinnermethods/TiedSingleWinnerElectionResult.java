@@ -21,7 +21,7 @@ import temp.frodank.electionsystem.logging.Log;
  * @author frodank
  * @param <U> The type of {@link Choice} used in the election
  */
-public class TiedSingleWinnerElectionResult<U extends Choice<U>> implements TiedElectionResult<Integer, U>, SingleWinnerElectionResult<U>{
+public class TiedSingleWinnerElectionResult<U extends Choice> implements TiedElectionResult<Integer, U>, SingleWinnerElectionResult<U>{
 
     private final List<U> tiedCandidates;
     private final List<Log> log;

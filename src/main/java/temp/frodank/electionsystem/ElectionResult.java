@@ -19,7 +19,7 @@ import temp.frodank.electionsystem.logging.Log;
  * @param <T> What Number representation the number of candidates are
  * @param <U> What instance of Choice the winning candidates are
  */
-public interface ElectionResult<T extends Number, U extends Choice<U>> {
+public interface ElectionResult<T extends Number, U extends Choice> {
     /**
      * Returns the winning candidates in a map with the choice as key and number
      * of candidates as a number.

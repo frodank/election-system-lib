@@ -18,7 +18,7 @@ import java.util.LinkedList;
  * @param <U> The type of {@link Choice} that the vote can have
  * @param <V> It's own type, for copying
  */
-public interface Vote<T extends Number, U extends Choice<U>, V extends Vote> {
+public interface Vote<T extends Number, U extends Choice, V extends Vote> {
     /**
      * Returns the list of preferred candidates in ranked order.
      * 

@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * @author frodank
  * @param <U> The type of {@link Choice} that the vote can have
  */
-public class SimpleRankedVote<U extends Choice<U>> implements Vote<Long, U, SimpleRankedVote>{
+public class SimpleRankedVote<U extends Choice> implements Vote<Long, U, SimpleRankedVote>{
 
     private final LinkedList<U> choices;
 

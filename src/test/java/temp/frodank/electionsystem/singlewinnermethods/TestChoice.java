@@ -14,7 +14,7 @@ import temp.frodank.electionsystem.Choice;
  *
  * @author frodank
  */
-public class TestChoice implements Choice<TestChoice> {
+public class TestChoice implements Choice {
 
     private String name;
 
@@ -25,11 +25,6 @@ public class TestChoice implements Choice<TestChoice> {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public int compareTo(TestChoice o) {
-        return this.name.compareTo(o.name);
     }
 
     @Override

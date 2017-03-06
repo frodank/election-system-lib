@@ -43,7 +43,7 @@ public abstract class ElectionSystem<T extends ElectionResult, V extends Vote, W
      * @param ballotBox A ballot-box used in the calculation. If an implementation edits this in any way {@link #needACopyOfVotesBeforeCalculation()} must return its default value of true.
      * @return The result of the election determined by this system
      */
-    public abstract T calculateResult(W ballotBox);
+    protected abstract T calculateResult(W ballotBox);
     
     /**
      * A helper-method for the election-system-implementation to sort candidates
@@ -53,7 +53,7 @@ public abstract class ElectionSystem<T extends ElectionResult, V extends Vote, W
      * @param votes a map containing the candidates (key) and how many votes each gets (value)
      * @return A sorted {@link LinkedHashMap} containing the candidates (key) and how many votes each gets (value)
      */
-    protected <U extends Choice<U>> Map<U, Long> sortedChoicesByVotes(Map<U, Long> votes) {
+    protected <U extends Choice> Map<U, Long> sortedChoicesByVotes(Map<U, Long> votes) {
         List<U> sortedList = new ArrayList<>(votes.keySet());
         Collections.sort(sortedList, (U o1, U o2) -> (int) (votes.get(o2)-votes.get(o1)));
         Map<U, Long> sortedMap = new LinkedHashMap<>();

@@ -48,7 +48,7 @@ import temp.frodank.electionsystem.logging.LogVoteCount;
  * @param <U> The type of {@link Choice} used in the election
  * @param <W> The type of {@link BallotBox} to use
  */
-public class ContingentVote<V extends Vote<Long, U, V>, U extends Choice<U>, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V, W> {
+public class ContingentVote<V extends Vote<Long, U, V>, U extends Choice, W extends BallotBox<V,W>> extends ElectionSystem<SingleWinnerElectionResult, V, W> {
 
     private SingleChoiceTieBreaker<Integer,U,V,W> tieBreaker;
     private TieBreaker<Integer,U,V,W> secondRoundDecider;
@@ -106,7 +106,7 @@ public class ContingentVote<V extends Vote<Long, U, V>, U extends Choice<U>, W e
     }
     
     @Override
-    public SingleWinnerElectionResult calculateResult(W ballotBox) {
+    protected SingleWinnerElectionResult calculateResult(W ballotBox) {
         
         List<Log> log = new ArrayList<>();
         Map<U, Long> tally = ballotBox.getVotes().stream().filter((v)->!v.getPrioritizedList().isEmpty()).collect(Collectors.toMap((v) -> v.getPrioritizedList().peek(), (v) -> v.getWeight(), (v1, v2) -> v1+v2));

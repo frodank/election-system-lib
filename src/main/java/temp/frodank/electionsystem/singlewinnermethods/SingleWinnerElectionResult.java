@@ -20,7 +20,7 @@ import temp.frodank.electionsystem.ElectionResult;
  * @author frodank
  * @param <U> The type of {@link Choice} used in the election
  */
-public interface SingleWinnerElectionResult<U extends Choice<U>> extends ElectionResult<Integer, U> {
+public interface SingleWinnerElectionResult<U extends Choice> extends ElectionResult<Integer, U> {
     /**
      * Returns the winner. null indicates that this is a {@link TiedSingleWinnerElectionResult}.
      * 
